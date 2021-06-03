@@ -1,4 +1,10 @@
 const express = require('express')
-const MongoClient = require('mongodb').MongoClient
-const ObjectId = require('mongodb').ObjectId
+const routes = require('./Config/routes')
 
+const app = express()
+
+app.use(express.json())
+
+routes(app)
+
+module.exports = app
