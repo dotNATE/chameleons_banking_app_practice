@@ -27,6 +27,27 @@ let getSingleAccountById = (req, res) => {
     })
 }
 
+let insertNewAccount = (req, res) => {
+    DbService.connectToDb(async (db) => {
+        let insertSuccess = await AccountService.insertNewAccount(db, req)
+        if (insertSuccess) {
+            const success = {
+                "success": true,
+                "message": "Account inserted successfully",
+                "status": 200
+            }
+            res.json(success)
+        } else {
+            const failure = {
+                "success": false,
+                "message": "No name provided. Account insertion failed.",
+                "status": 400
+            }
+            res.json(failure)
+        }
+    })
+}
+
 let deleteAccount = (req, res) => {
     DbService.connectToDb(async (db) => {
         let deletedSuccess = await AccountService.deleteAccount(db, req)
@@ -145,3 +166,4 @@ module.exports.depositIntoAccount = depositIntoAccount
 module.exports.withdrawFromAccount = withdrawFromAccount
 module.exports.executeAccountTransfer = executeAccountTransfer
 module.exports.deleteAccount = deleteAccount
+module.exports.insertNewAccount = insertNewAccount

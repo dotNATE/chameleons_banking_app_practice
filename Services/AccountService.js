@@ -37,9 +37,23 @@ let deleteAccount = async (db, req) => {
     return data.deletedCount
 }
 
+let insertNewAccount = async (db, req) => {
+    const collection = db.collection('accounts')
+    if (req.body.name) {
+        const data = await collection.insertOne({
+            "name": req.body.name,
+            "balance": 0
+        })
+        return data.insertedCount
+    } else {
+        return false
+    }
+}
+
 module.exports.getAllAccounts = getAllAccounts
 module.exports.getSingleAccountById = getSingleAccountById
 module.exports.depositIntoAccount = depositIntoAccount
 module.exports.withdrawFromAccount = withdrawFromAccount
 module.exports.executeAccountTransfer = executeAccountTransfer
 module.exports.deleteAccount = deleteAccount
+module.exports.insertNewAccount = insertNewAccount
