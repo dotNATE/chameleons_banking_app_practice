@@ -31,8 +31,15 @@ let executeAccountTransfer = async (db, req) => {
     return (withdrawal.modifiedCount && deposit.modifiedCount)
 }
 
+let deleteAccount = async (db, req) => {
+    const collection = db.collection('accounts')
+    const data = await collection.deleteOne({_id: ObjectId(req.body.id)})
+    return data.deletedCount
+}
+
 module.exports.getAllAccounts = getAllAccounts
 module.exports.getSingleAccountById = getSingleAccountById
 module.exports.depositIntoAccount = depositIntoAccount
 module.exports.withdrawFromAccount = withdrawFromAccount
 module.exports.executeAccountTransfer = executeAccountTransfer
+module.exports.deleteAccount = deleteAccount
