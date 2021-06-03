@@ -3,7 +3,7 @@ const AccountService = require('../Services/AccountService')
 
 let getAllAccounts = (req, res) => {
     DbService.connectToDb(async (db) => {
-        let accounts = await AccountService.getAllAccounts(db)
+        let accounts = await AccountService.getAllAccounts(db, req)
         const success = {
             "success": true,
             "message": "All accounts successfully retrieved",
