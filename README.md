@@ -18,15 +18,15 @@
 ```json
 {
   "success": true,
-  "message": "It worked",
+  "message": "It worked.",
   "status": 200,
   "data": [{},{},{}]
 }
 ```
 
-## Endpoints
+# Endpoints
 
-### Get user accounts
+## Get user accounts
 
 Returns json data representing user accounts on the database.
 Can be used to retrieve all accounts or individual accounts
@@ -48,7 +48,7 @@ Can be used to retrieve all accounts or individual accounts
 ```json
 {
 "success": true,
-"message": "Requested accounts successfully retrieved",
+"message": "Requested accounts successfully retrieved.",
 "status": 200,
 "data": [{}, {}, {}]
 }
@@ -60,14 +60,82 @@ Can be used to retrieve all accounts or individual accounts
 ```json
 {
 "success": false,
-"message": "The resource/s requested does not exist at the desired location",
+"message": "The resource/s requested does not exist at the desired location.",
 "status": 404
 }
 ```
 
-### Deposit into account (increase balance value by providing account ID)
+## Add new account
 
-Increases the balance of an account, specified by a provided ObjectId. 
+Generates a new account and inserts it into the database.
+
+* **URL** <br /> `/people`
+* **Method:** <br /> `POST`
+* **Data Params** <br />
+```json
+{
+  "name": "Example"
+}
+```
+* **Success Response** <br />
+  **Code:** 200 <br />
+  **Content:** <br />
+```json
+{
+  "success": true,
+  "message": "Account inserted successfully.",
+  "status": 200
+}
+```
+
+* **Error Response** <br />
+  **Code:** 400 <br />
+  **Content:** <br />
+```json
+{
+  "success": false,
+  "message": "No name provided. Account insertion failed.",
+  "status": 400
+}
+```
+
+## Delete account
+
+Generates a new account and inserts it into the database.
+
+* **URL** <br /> `/people`
+* **Method:** <br /> `DELETE`
+* **Data Params** <br />
+```json
+{
+  "name": "Example"
+}
+```
+* **Success Response** <br />
+  **Code:** 200 <br />
+  **Content:** <br />
+```json
+{
+  "success": true,
+  "message": "Account deleted successfully.",
+  "status": 200
+}
+```
+
+* **Error Response** <br />
+  **Code:** 404 <br />
+  **Content:** <br />
+```json
+{
+  "success": false,
+  "message": "Account deletion failed.",
+  "status": 404
+}
+```
+
+## Deposit into account
+
+Increases the balance of an account, specified by a provided _id. 
 You are only able to provide positive numbers to increment the balance.
 
 * **URL** <br /> `/deposits`  
@@ -75,8 +143,8 @@ You are only able to provide positive numbers to increment the balance.
 * **Data Params** <br />
 ```json
 {
-  "id": "desired account _id",
-  "amount": "desired amount to increment account balance"
+  "id": "desired account _id.",
+  "amount": "desired amount to increment account balance."
 }
 ```
 * **Success Response** <br />
@@ -85,7 +153,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": true,
-  "message": "Your deposit was completed successfully",
+  "message": "Your deposit was completed successfully.",
   "status": 200
 }
 ```
@@ -96,7 +164,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": false,
-  "message": "Invalid amount value",
+  "message": "Invalid amount value.",
   "status": 400
 }
 ```
@@ -110,10 +178,10 @@ You are only able to provide positive numbers to increment the balance.
 }
 ```
 
-### Withdraw from account (decrease balance value by providing account ID)
+## Withdraw from account
 
-Increases the balance of an account, specified by a provided ObjectId. 
-You are only able to provide positive numbers to increment the balance.
+Decreases the balance of an account, specified by a provided _id. 
+You are only able to provide positive numbers to decrement the balance.
 
 * **URL** <br /> `/withdrawals`  
 * **Method:** <br /> `PUT`
@@ -121,7 +189,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "id": "desired account _id",
-  "amount": "desired amount to decrement account balance"
+  "amount": "desired amount to decrement account balance."
 }
 ```
 * **Success Response** <br />
@@ -130,7 +198,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": true,
-  "message": "Your withdrawal was completed successfully",
+  "message": "Your withdrawal was completed successfully.",
   "status": 200
 }
 ```
@@ -141,7 +209,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": false,
-  "message": "Invalid amount value",
+  "message": "Invalid amount value.",
   "status": 400
 }
 ```
@@ -155,18 +223,18 @@ You are only able to provide positive numbers to increment the balance.
 }
 ```
 
-### Transfer balance between accounts (decrease balance value by providing account ID)
+## Transfer balance between accounts
 
-Increases the balance of an account, specified by a provided ObjectId.
-You are only able to provide positive numbers to increment the balance.
+Transfer funds from one account to another by providing both _id's, and a transfer amount.
 
-* **URL** <br /> `/withdrawals`
+* **URL** <br /> `/transfers`
 * **Method:** <br /> `PUT`
 * **Data Params** <br />
 ```json
 {
-  "id": "desired account _id",
-  "amount": "desired amount to decrement account balance"
+  "id": "_id of transfer origin account.",
+  "destinationId": "_id of transfer destination account.",
+  "amount": "desired amount to transfer between accounts."
 }
 ```
 * **Success Response** <br />
@@ -175,7 +243,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": true,
-  "message": "Your withdrawal was completed successfully",
+  "message": "Your transfer was completed successfully.",
   "status": 200
 }
 ```
@@ -186,7 +254,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": false,
-  "message": "Invalid amount value",
+  "message": "Invalid amount value.",
   "status": 400
 }
 ```
