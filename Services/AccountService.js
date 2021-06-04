@@ -1,12 +1,5 @@
 const ObjectId = require('mongodb').ObjectId
-
-function generateFilterObject(req) {
-    let filter = {}
-    for (const [key, value] of Object.entries(req.query)) {
-        filter[key] = value
-    }
-    return filter
-}
+const generateFilterObject = require('./generateFilterService').generateFilterObject
 
 let getAllAccounts = async (db, req) => {
     const collection = db.collection('accounts')

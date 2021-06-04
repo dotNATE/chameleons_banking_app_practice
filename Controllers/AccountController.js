@@ -1,29 +1,24 @@
 const DbService = require('../Services/DbService')
 const AccountService = require('../Services/AccountService')
+const JSONResponseService = require('../Services/JSONResponseService')
 
 let getAllAccounts = (req, res) => {
     DbService.connectToDb(async (db) => {
         let accounts = await AccountService.getAllAccounts(db, req)
-        const success = {
-            "success": true,
-            "message": "All accounts successfully retrieved",
-            "status": 200,
-            "data": accounts
-        }
-        res.json(success)
+        let response = JSONResponseService.generateSuccessResponse()
+        response.message = "All accounts successfully retrieved"
+        response.data = accounts
+        res.json(response)
     })
 }
 
 let getSingleAccountById = (req, res) => {
     DbService.connectToDb(async (db) => {
         let account = await AccountService.getSingleAccountById(db, req)
-        const success = {
-            "success": true,
-            "message": "Account successfully retrieved",
-            "status": 200,
-            "data": account
-        }
-        res.json(success)
+        let response = JSONResponseService.generateSuccessResponse()
+        response.message = "Account successfully retrieved"
+        response.data = account
+        res.json(response)
     })
 }
 
@@ -31,19 +26,13 @@ let insertNewAccount = (req, res) => {
     DbService.connectToDb(async (db) => {
         let insertSuccess = await AccountService.insertNewAccount(db, req)
         if (insertSuccess) {
-            const success = {
-                "success": true,
-                "message": "Account inserted successfully",
-                "status": 200
-            }
-            res.json(success)
+            let response = JSONResponseService.generateSuccessResponse()
+            response.message = "Account inserted successfully"
+            res.json(response)
         } else {
-            const failure = {
-                "success": false,
-                "message": "No name provided. Account insertion failed.",
-                "status": 400
-            }
-            res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "No name provided. Account insertion failed."
+            res.json(response)
         }
     })
 }
@@ -52,19 +41,13 @@ let deleteAccount = (req, res) => {
     DbService.connectToDb(async (db) => {
         let deletedSuccess = await AccountService.deleteAccount(db, req)
         if (deletedSuccess) {
-            const success = {
-                "success": true,
-                "message": "Account deleted successfully",
-                "status": 200
-            }
-            res.json(success)
+            let response = JSONResponseService.generateSuccessResponse()
+            response.message = "Account deleted successfully"
+            res.json(response)
         } else {
-            const failure = {
-                "success": false,
-                "message": "Account deletion failed",
-                "status": 400
-            }
-            res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "Account deletion failed"
+            res.json(response)
         }
     })
 }
@@ -72,37 +55,25 @@ let deleteAccount = (req, res) => {
 let depositIntoAccount = (req, res) => {
     DbService.connectToDb(async (db) => {
         if (req.body.amount < 0) {
-            const failure = {
-                "success": false,
-                "message": "Cannot deposit a negative integer",
-                "status": 400
-            }
-            return res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "Cannot deposit a negative integer"
+            return res.json(response)
         }
         if (typeof req.body.amount !== "number") {
-            const failure = {
-                "success": false,
-                "message": "The deposit amount provided is not a number",
-                "status": 400
-            }
-            return res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "The deposit amount provided is not a number"
+            return res.json(response)
         }
         let depositSuccess = await AccountService.depositIntoAccount(db, req)
 
         if (depositSuccess) {
-            const success = {
-                "success": true,
-                "message": "Your deposit was successfully completed",
-                "status": 200
-            }
-            res.json(success)
+            let response = JSONResponseService.generateSuccessResponse()
+            response.message = "Your deposit was successfully completed"
+            res.json(response)
         } else {
-            const failure = {
-                "success": false,
-                "message": "Something went wrong with your withdrawal. Your account has not been affected.",
-                "status": 400
-            }
-            res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "Something went wrong with your withdrawal. Your account has not been affected."
+            res.json(response)
         }
     })
 }
@@ -110,30 +81,21 @@ let depositIntoAccount = (req, res) => {
 let withdrawFromAccount = (req, res) => {
     DbService.connectToDb(async (db) => {
         if (req.body.amount < 0 || typeof req.body.amount !== "number") {
-            const failure = {
-                "success": false,
-                "message": "Invalid amount value",
-                "status": 400
-            }
-            return res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "Invalid amount value"
+            return res.json(response)
         }
 
         let withdrawalSuccess = await AccountService.withdrawFromAccount(db, req)
 
         if (withdrawalSuccess) {
-            const success = {
-                "success": true,
-                "message": "Your withdrawal was successfully completed",
-                "status": 200
-            }
-            res.json(success)
+            let response = JSONResponseService.generateSuccessResponse()
+            response.message = "Your withdrawal was successfully completed"
+            res.json(response)
         } else {
-            const failure = {
-                "success": false,
-                "message": "Something went wrong with your withdrawal. Your account has not been affected.",
-                "status": 400
-            }
-            res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "Something went wrong with your withdrawal. Your account has not been affected."
+            res.json(response)
         }
     })
 }
@@ -141,21 +103,15 @@ let withdrawFromAccount = (req, res) => {
 let executeAccountTransfer = (req, res) => {
     DbService.connectToDb(async (db) => {
         if (req.body.amount < 0 || typeof req.body.amount !== "number") {
-            const failure = {
-                "success": false,
-                "message": "Invalid amount value",
-                "status": 400
-            }
-            return res.json(failure)
+            let response = JSONResponseService.generateFailureResponse()
+            response.message = "Invalid amount value"
+            return res.json(response)
         }
         const transferSuccess = await AccountService.executeAccountTransfer(db, req)
         if (transferSuccess) {
-            const success = {
-                "success": true,
-                "message": "Your transfer was completed successfully",
-                "status": 200
-            }
-            res.json(success)
+            let response = JSONResponseService.generateSuccessResponse()
+            response.message = "Your transfer was completed successfully"
+            res.json(response)
         }
     })
 }
