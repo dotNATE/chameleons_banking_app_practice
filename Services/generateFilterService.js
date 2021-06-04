@@ -1,12 +1,11 @@
 function generateFilterObject(req) {
-    let filter = {}
     if (req.query.isOverdrawn === 'true') {
-        filter = {balance: {$lt: 0}}
+        return {balance: {$lt: 0}}
     }
     if (req.query.isOverdrawn === 'false') {
-        filter = {balance: {$gte: 0}}
+        return {balance: {$gte: 0}}
     }
-    return filter
+    return {}
 }
 
 module.exports.generateFilterObject = generateFilterObject
