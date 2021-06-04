@@ -37,16 +37,20 @@ Can be used to retrieve all accounts or individual accounts
   **Required:** <br /> `n/a` <br />
   **Optional:** <br />
   `/people/:id` <br />
-  - Providing an individual account's id will return all info for that account, no more.
+  * Providing an individual account's id will return all info for that account, no more. <br />
+  
+  `/people?isOverdrawn=[boolean]`
+  * Depending on boolean value supplied will return all account with either less than 0 (if boolean is false), or greater than or equal to 0 (if boolean supplied is true). <br />
+
 * **Success Response** <br />
   **Code:** 200 <br />
   **Content:** <br />
 ```json
 {
 "success": true,
-"message": "All accounts successfully retrieved",
+"message": "Requested accounts successfully retrieved",
 "status": 200,
-"data": [{account}, {account}, {account}]
+"data": [{}, {}, {}]
 }
 ```
 
@@ -71,8 +75,8 @@ You are only able to provide positive numbers to increment the balance.
 * **Data Params** <br />
 ```json
 {
-  "id": desired account ObjectId(_id),
-  "depositAmt": desired amount to increment account balance
+  "id": "desired account _id",
+  "amount": "desired amount to increment account balance"
 }
 ```
 * **Success Response** <br />
@@ -81,7 +85,7 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": true,
-  "message": "Account balance successfully updated",
+  "message": "Your deposit was completed successfully",
   "status": 200
 }
 ```
@@ -92,8 +96,17 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": false,
-  "message": Detailed error message describing where you went wrong!,
+  "message": "Invalid amount value",
   "status": 400
+}
+```
+  **Code:** 404 <br />
+  **Content:** <br />
+```json
+{
+  "success": false,
+  "message": "There is no account found with that ID.",
+  "status": 404
 }
 ```
 
@@ -107,8 +120,8 @@ You are only able to provide positive numbers to increment the balance.
 * **Data Params** <br />
 ```json
 {
-  "id": desired account ObjectId(_id),
-  "amount": desired amount to decrement account balance
+  "id": "desired account _id",
+  "amount": "desired amount to decrement account balance"
 }
 ```
 * **Success Response** <br />
@@ -128,16 +141,52 @@ You are only able to provide positive numbers to increment the balance.
 ```json
 {
   "success": false,
-  "message": "Something went wrong with your withdrawal. Your account has not been affected.",
+  "message": "Invalid amount value",
   "status": 400
 }
 ```
+  **Code:** 404 <br />
+  **Content:** <br />
+```json
+{
+  "success": false,
+  "message": "There is no account found with that ID.",
+  "status": 404
+}
+```
+
+### Transfer balance between accounts (decrease balance value by providing account ID)
+
+Increases the balance of an account, specified by a provided ObjectId.
+You are only able to provide positive numbers to increment the balance.
+
+* **URL** <br /> `/withdrawals`
+* **Method:** <br /> `PUT`
+* **Data Params** <br />
+```json
+{
+  "id": "desired account _id",
+  "amount": "desired amount to decrement account balance"
+}
+```
+* **Success Response** <br />
+  **Code:** 200 <br />
+  **Content:** <br />
+```json
+{
+  "success": true,
+  "message": "Your withdrawal was completed successfully",
+  "status": 200
+}
+```
+
+* **Error Response** <br />
   **Code:** 400 <br />
   **Content:** <br />
 ```json
 {
   "success": false,
-  "message": "Invalid amount value.",
+  "message": "Invalid amount value",
   "status": 400
 }
 ```

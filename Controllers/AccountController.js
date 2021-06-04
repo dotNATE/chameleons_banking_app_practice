@@ -6,7 +6,7 @@ let getAllAccounts = (req, res) => {
     DbService.connectToDb(async (db) => {
         let accounts = await AccountService.getAllAccounts(db, req)
         let response = JSONResponseService.generateSuccessResponse()
-        response.message = "All accounts successfully retrieved"
+        response.message = "Requested accounts successfully retrieved"
         response.data = accounts
         res.json(response)
     })
@@ -17,7 +17,7 @@ let getSingleAccountById = (req, res) => {
         let account = await AccountService.getSingleAccountById(db, req)
         let response = JSONResponseService.generateSuccessResponse()
         response.message = "Account successfully retrieved"
-        response.data = account
+        response.data = [account]
         res.json(response)
     })
 }
@@ -54,25 +54,20 @@ let deleteAccount = (req, res) => {
 
 let depositIntoAccount = (req, res) => {
     DbService.connectToDb(async (db) => {
-        if (req.body.amount < 0) {
+        if (req.body.amount < 0 || typeof req.body.amount !== "number") {
             let response = JSONResponseService.generateFailureResponse()
-            response.message = "Cannot deposit a negative integer"
-            return res.json(response)
-        }
-        if (typeof req.body.amount !== "number") {
-            let response = JSONResponseService.generateFailureResponse()
-            response.message = "The deposit amount provided is not a number"
+            response.message = "Invalid amount value"
             return res.json(response)
         }
         let depositSuccess = await AccountService.depositIntoAccount(db, req)
-
         if (depositSuccess) {
             let response = JSONResponseService.generateSuccessResponse()
-            response.message = "Your deposit was successfully completed"
+            response.message = "Your deposit was completed successfully"
             res.json(response)
         } else {
             let response = JSONResponseService.generateFailureResponse()
-            response.message = "Something went wrong with your withdrawal. Your account has not been affected."
+            response.message = "There is no account found with that ID."
+            response.status = 404
             res.json(response)
         }
     })
@@ -90,7 +85,7 @@ let withdrawFromAccount = (req, res) => {
 
         if (withdrawalSuccess) {
             let response = JSONResponseService.generateSuccessResponse()
-            response.message = "Your withdrawal was successfully completed"
+            response.message = "Your withdrawal was completed successfully"
             res.json(response)
         } else {
             let response = JSONResponseService.generateFailureResponse()
